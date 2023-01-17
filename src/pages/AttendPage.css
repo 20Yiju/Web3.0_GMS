@@ -1,0 +1,9 @@
+.event-year .events-logos {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 10px 30px -5px rgb(101 52 255 / 50%);
+}
+
