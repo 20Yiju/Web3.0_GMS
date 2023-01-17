@@ -6,7 +6,7 @@ import {
 import { useState } from 'react';
 // import AttendModal from './Modal/AttendModal';
 import './AttendPage.css';
-import './Modal/AttendModal.css';
+import '../Modal/AttendModal.css';
 
 export default function AttendPage() {
     const [modal, setModal] = useState(false);

@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
-import Iconify from '../components/iconify';
+import Iconify from '../../components/iconify';
 // sections
 import {
   AppTasks,
@@ -16,7 +16,7 @@ import {
   AppWidgetSummary,
   AppCurrentSubject,
   AppConversionRates,
-} from '../sections/@dashboard/app';
+} from '../../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
 

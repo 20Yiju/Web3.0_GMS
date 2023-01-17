@@ -3,16 +3,15 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-// import BlogPage from './pages/BlogPage';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/user/HomePage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import GradeDataPage from './pages/GradeDataPage';
-import RankingPage from './pages/RankingPage';
-import AttendDataPage from './pages/AttendDataPage';
-import Profile from './pages/Profile';
-import AttendPage from './pages/AttendPage';
-import GradePage from './pages/GradePage';
+import GradeDataPage from './pages/user/GradeDataPage';
+import RankingPage from './pages/user/RankingPage';
+import AttendDataPage from './pages/user/AttendDataPage';
+import Profile from './pages/user/Profile';
+import AttendPage from './pages/user/AttendPage';
+import GradePage from './pages/user/GradePage';
 
 
 

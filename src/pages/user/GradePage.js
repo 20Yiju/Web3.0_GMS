@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import './AttendPage.css';
-import './Modal/AttendModal.css';
+import '../Modal/AttendModal.css';
 
 export default function GradePage() {
     const [modal, setModal] = useState(false);
