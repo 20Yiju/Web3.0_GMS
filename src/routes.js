@@ -1,6 +1,8 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
+import AdminDashboardLayout from './layouts/dashboard';
+
 import SimpleLayout from './layouts/simple';
 //
 import HomePage from './pages/user/HomePage';
@@ -12,6 +14,7 @@ import AttendDataPage from './pages/user/AttendDataPage';
 import Profile from './pages/user/Profile';
 import AttendPage from './pages/user/AttendPage';
 import GradePage from './pages/user/GradePage';
+import StudentListPage from './pages/admin/StudentListPage';
 
 
 
@@ -28,8 +31,15 @@ export default function Router() {
         { path: 'attendData', element: <AttendDataPage /> },
         { path: 'gradeData', element: <GradeDataPage /> },
         { path: 'attendance', element: <AttendPage /> },
-        { path: 'grade', element: <GradePage /> }
+        { path: 'grade', element: <GradePage /> },
       ],
+    },
+    {
+      path: '/a_dashboard',
+      element: <AdminDashboardLayout />,
+      children: [
+        { path: 'a_studentlist', element: <StudentListPage /> }
+      ]
     },
     {
       path: 'login',
