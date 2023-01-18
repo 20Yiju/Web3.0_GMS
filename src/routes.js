@@ -14,7 +14,7 @@ import AttendDataPage from './pages/user/AttendDataPage';
 import Profile from './pages/user/Profile';
 import AttendPage from './pages/user/AttendPage';
 import GradePage from './pages/user/GradePage';
-import StudentListPage from './pages/admin/StudentListPage';
+import AdminStudentListPage from './pages/admin/AdminStudentListPage';
 
 
 
@@ -38,7 +38,7 @@ export default function Router() {
       path: '/a_dashboard',
       element: <AdminDashboardLayout />,
       children: [
-        { path: 'a_studentlist', element: <StudentListPage /> }
+        { path: 'a_studentlist', element: <AdminStudentListPage /> }
       ]
     },
     {
