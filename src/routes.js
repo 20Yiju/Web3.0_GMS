@@ -1,7 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
-import AdminDashboardLayout from './layouts/dashboard';
+import AdminDashboardLayout from './layouts/AdminDashboard';
 
 import SimpleLayout from './layouts/simple';
 //
@@ -11,10 +11,12 @@ import Page404 from './pages/Page404';
 import GradeDataPage from './pages/user/GradeDataPage';
 import RankingPage from './pages/user/RankingPage';
 import AttendDataPage from './pages/user/AttendDataPage';
-import Profile from './pages/user/Profile';
+import Profile from './pages/user/ProfilePage';
 import AttendPage from './pages/user/AttendPage';
 import GradePage from './pages/user/GradePage';
 import AdminStudentListPage from './pages/admin/AdminStudentListPage';
+import AdminHomePage from './pages/admin/AdminHomePage';
+import AdminTokenManagePage from './pages/admin/AdminTokenManagePage';
 
 
 
@@ -38,7 +40,10 @@ export default function Router() {
       path: '/a_dashboard',
       element: <AdminDashboardLayout />,
       children: [
-        { path: 'a_studentlist', element: <AdminStudentListPage /> }
+        { element: <Navigate to="/a_dashboard/a_home" />, index: true },
+        { path: 'a_home', element: <AdminHomePage /> },
+        { path: 'a_studentlist', element: <AdminStudentListPage /> },
+        { path: 'a_tokenmanage', element: <AdminTokenManagePage /> },
       ]
     },
     {

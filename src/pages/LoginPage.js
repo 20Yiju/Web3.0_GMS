@@ -5,10 +5,12 @@ import { Link, Container, Typography, Divider, Stack, Button } from '@mui/materi
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
+// import Logo from '../components/logo/user';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
+import { useNavigate } from 'react-router-dom';
+
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +43,16 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  
   const mdUp = useResponsive('up', 'md');
+
+  const handleOpenUser = () => {
+    navigate("/dashboard/home");
+  };
+  const handleOpenAdmin = () => {
+    navigate("/a_dashboard/a_studentlist");
+  };
 
   return (
     <>
@@ -50,13 +61,13 @@ export default function LoginPage() {
       </Helmet>
 
       <StyledRoot>
-        <Logo
+        {/* <Logo
           sx={{
             position: 'fixed',
             top: { xs: 16, sm: 24, md: 40 },
             left: { xs: 16, sm: 24, md: 40 },
           }}
-        />
+        /> */}
 
         {mdUp && (
           <StyledSection>
@@ -83,12 +94,12 @@ export default function LoginPage() {
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
               </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
+              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenUser}>
+                사용자
               </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
+              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenAdmin}>
+                관리자
               </Button>
             </Stack>
 

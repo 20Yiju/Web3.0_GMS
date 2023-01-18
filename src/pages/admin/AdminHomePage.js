@@ -5,14 +5,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
 
+
 // @mui
 import {
   Card,
   Table,
   Stack,
   Paper,
+  Avatar,
   Button,
   Popover,
+  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
@@ -22,24 +25,15 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  TextField,
-  Select,
-  FormGroup,
-  FormControlLabel,
-  Checkbox
 } from '@mui/material';
-
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 // components
-
+import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
@@ -56,63 +50,21 @@ const TABLE_HEAD = [
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
   // { id: '' },
-  { id: 'order', label: '순서', alignRight: false },
-  { id: 'name', label: '이름', alignRight: false },
-  { id: 'studentNum', label: '학번', alignRight: false },
-  { id: 'retake', label: '재이수', alignRight: false },
-  { id: 'achieve', label: '성취도', alignRight: false },
-  { id: 'publishinfo', label: '토큰 발행 정보', alignRight: false },
-  { id: 'attendance', label: '출석', alignRight: false },
-  { id: 'grade', label: '성적', alignRight: false },
- 
+  { id: 'name', label: '과목명', alignRight: false },
+  { id: 'achievement', label: '성취도', alignRight: false },
+  { id: 'professor', label: '담당 교수', alignRight: false },
+  { id: 'syllabus', label: '강의 계획서', alignRight: false },
+  { id: 'attendance', label: '출석 토큰', alignRight: false },
+  { id: 'grade', label: '성적 토큰', alignRight: false },
+  { id: 'ranking', label: '랭킹', alignRight: false },
+  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16
-];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
-    return -1; 
+    return -1;
   }
   if (b[orderBy] > a[orderBy]) {
     return 1;
@@ -139,10 +91,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-
-export default function AdminStudentListPage() {
-  
+export default function HomePage() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(null);
@@ -182,35 +131,20 @@ export default function AdminStudentListPage() {
     setSelected([]);
   };
 
-
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    }
+    setSelected(newSelected);
   };
-
-
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-  //   }
-  //   setSelected(newSelected);
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -224,13 +158,6 @@ export default function AdminStudentListPage() {
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
-  };
-  
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
@@ -248,26 +175,87 @@ export default function AdminStudentListPage() {
   const goGrade = () => {
     navigate("/dashboard/grade");
   };
-  const goTokenPublish = () => {
-    navigate("/a_dashboard/a_tokenpublish");
+  const goRanking = () => {
+    navigate("/dashboard/ranking");
+    
+    
   };
-  
+
+
+const [popup, setPopup] = React.useState(false);
+
+const handleClickOpen = () => {
+  setPopup(true);
+};
+
+const handleClose = () => {
+  setPopup(false);
+};
+
 
   return (
     <>
-    
       <Helmet>
-        <title> Home </title>
+        <title> Admin Home </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          {/* <Typography variant="h4" gutterBottom>
-            <h2>관리자 홈페이지</h2>
-          </Typography> */}
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            hambugar
+          <Typography variant="h4" gutterBottom>
+            Admin Home
+          </Typography>
+          <Button variant="outlined" startIcon={<Iconify icon="eva:plus-fill" />} onClick= {handleClickOpen} > 
+            등록하기
           </Button>
+          <Dialog open={popup} onClose={handleClose}>
+        <DialogTitle>과목 등록하기</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            새로운 과목을 추가해 주세요:D
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="class"
+            label="개설 과목명"
+            type="class"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="time"
+            label="개설 기간"
+            type="string time"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="classroom"
+            label="강의실"
+            type="claclassroomss"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="schedule"
+            label="강의 계획서"
+            type="schedule"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>취소</Button>
+          <Button onClick={handleClose}>등록</Button>
+        </DialogActions>
+      </Dialog>
+
         </Stack>
 
         <Card>
@@ -280,25 +268,22 @@ export default function AdminStudentListPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length + 2}
+                  rowCount={USERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { order, name, studentNum, retake , achievement} = row;
+                    const { id, name, professor, achievement} = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
-                      <TableRow hover key={order} tabIndex={-1}>
-                        {/* <TableCell padding="checkbox">
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                        <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell> */}
-
-                        <TableCell>
-                          {order}
                         </TableCell>
+
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             {/* <Avatar alt={name} src={avatarUrl} /> */}
@@ -307,82 +292,31 @@ export default function AdminStudentListPage() {
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{studentNum}</TableCell>
-                        <TableCell align="left">{retake}</TableCell>
+
                         <TableCell align="left">{achievement}</TableCell>
 
+                        <TableCell align="left">{professor}</TableCell>
+
                         <TableCell align="left">
-                            <Button onClick={goTokenPublish}>확인</Button>
+                            <Button onClick={goSyllabus}>확인</Button>
                         </TableCell>
 
                         <TableCell align="left">
-                            <Button className='btn1' onClick={handleClickOpen}>
-                              입력
-                            <Dialog 
-
-                            open={open} onClose={handleClose}>
-                              <DialogTitle>Subscribe</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText>
-                                  To subscribe to this website, please enter your email address here. We
-                                  will send updates occasionally.
-                                </DialogContentText>
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="name"
-                                  label="Email Address"
-                                  type="email"
-                                  fullWidth
-                                  variant="standard"
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={handleClose}>발행</Button>
-                              </DialogActions>
-                            </Dialog>
-                            </Button>
+                            <Button onClick={goAttendance}>확인</Button>
                         </TableCell>
 
                         <TableCell align="left">
-                            <Button onClick={handleClickOpen}>
-                              입력
-                            </Button>
-                            <Dialog open={open} onClose={handleClose}>
-                              <DialogTitle>홍길동의 출결정보 수정</DialogTitle>
-                              <DialogContent>
-                                <FormControl sx={{ m: 1, width: 100 }}>
-                                  <InputLabel id="demo-multiple-name-label">주차</InputLabel>
-                                    <Select
-                                      labelId="demo-multiple-name-label"
-                                      id="demo-multiple-name"
-                                      multiple
-                                      value={personName}
-                                      onChange={handleChange}
-                                      input={<OutlinedInput label="Name" />}
-                                      MenuProps={MenuProps}
-                                    >
-                                      {names.map((name) => (
-                                        <MenuItem
-                                          key={name}
-                                          value={name}
-                                          style={getStyles(name, personName, theme)}
-                                        >
-                                          {name}
-                                        </MenuItem>
-                                      ))}
-                                    </Select>
-                                </FormControl>
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel disabled control={<Checkbox />} label="Disabled" />
-                              
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={handleClose}>발행</Button>
-                              </DialogActions>
-                            </Dialog>
+                            <Button onClick={goGrade}>확인</Button>
+                        </TableCell>
+
+                        <TableCell align="left">
+                            <Button onClick={goRanking}>확인</Button>
+                        </TableCell>
+
+                        <TableCell align="right">
+                          <IconButton size="large" co lor="inherit" onClick={handleOpenMenu}>
+                            <Iconify icon={'eva:more-vertical-fill'} />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     );
@@ -433,6 +367,34 @@ export default function AdminStudentListPage() {
         </Card>
       </Container>
 
+      <Popover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            width: 140,
+            '& .MuiMenuItem-root': {
+              px: 1,
+              typography: 'body2',
+              borderRadius: 0.75,
+            },
+          },
+        }}
+      >
+        <MenuItem>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
+
+        <MenuItem sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      </Popover>
     </>
   );
 }

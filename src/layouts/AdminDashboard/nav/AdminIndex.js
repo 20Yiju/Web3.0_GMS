@@ -10,11 +10,11 @@ import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
-import Logo from '../../../components/logo/user';
+import Logo from '../../../components/logo/admin';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
-import navConfig from './config';
+import navConfig from './AdminConfig';
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box>
       <div>
-          <h1> 수강생 메뉴 </h1>
+          <h1> 관리자 메뉴 </h1>
           <hr />
           <NavSection data={navConfig} />
       </div>

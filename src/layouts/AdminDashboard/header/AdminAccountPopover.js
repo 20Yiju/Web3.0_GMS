@@ -28,7 +28,7 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function a_AccountPopover() {
+export default function AdimnAccountPopover() {
   const [open, setOpen] = useState(null);
   const navigate = useNavigate();
 

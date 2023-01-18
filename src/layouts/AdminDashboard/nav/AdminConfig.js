@@ -7,13 +7,13 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const navConfig = [
   {
-    title: '출석 데이터',
-    path: '/dashboard/attendData',
+    title: '수강 과목',
+    path: '/a_dashboard/a_home',
     icon: icon('ic_user'),
   },
   {
-    title: '성적 데이터',
-    path: '/dashboard/gradeData',
+    title: '토큰 관리',
+    path: '/a_dashboard/a_tokenmanage',
     icon: icon('ic_analytics'),
   },
   {
