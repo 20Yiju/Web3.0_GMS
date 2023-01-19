@@ -331,7 +331,7 @@ function add_click() {
                       <TableRow> 
                         
 
-<TableCell align="left"></TableCell>
+
                         <TableCell align="left">{token}</TableCell>
 
                         <TableCell align="left">{submission}</TableCell>

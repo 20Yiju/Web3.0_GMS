@@ -50,7 +50,6 @@ const TABLE_HEAD = [
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
   // { id: '' },
-  { id: '' },
   { id: 'name', label: '개설 과목명', alignRight: false },
   { id: 'section', label: '분반', alignRight: false },
   { id: '' },
@@ -266,8 +265,6 @@ const handleClose = () => {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <AdminListHead
-                  order={order}
-                  orderBy={orderBy}
                   headLabel={TABLE_HEAD}
                   rowCount={USERLIST.length}
                   numSelected={selected.length}
@@ -276,16 +273,13 @@ const handleClose = () => {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, classname, section, classroom} = row;
+                    const { classname, section, classroom} = row;
                     const selectedUser = selected.indexOf(classname) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, classname)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
+                      <TableRow hover key={classname} tabIndex={-1}>
+                        
+                        <TableCell component="th" scope="row" padding="normal">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             {/* <Avatar alt={name} src={avatarUrl} /> */}
                             <Typography variant="subtitle2" noWrap>
@@ -309,6 +303,7 @@ const handleClose = () => {
                         </TableCell>
 
                         <TableCell align="left">
+                        
                         <Button  onClick= {handleClickOpen} > 
                           수정
                         </Button>
