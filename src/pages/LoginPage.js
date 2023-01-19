@@ -51,7 +51,7 @@ export default function LoginPage() {
     navigate("/dashboard/home");
   };
   const handleOpenAdmin = () => {
-    navigate("/a_dashboard/a_studentlist");
+    navigate("/a_dashboard/a_home");
   };
 
   return (

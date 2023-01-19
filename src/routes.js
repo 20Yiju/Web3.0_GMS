@@ -17,6 +17,7 @@ import GradePage from './pages/user/GradePage';
 import AdminStudentListPage from './pages/admin/AdminStudentListPage';
 import AdminHomePage from './pages/admin/AdminHomePage';
 import AdminTokenManagePage from './pages/admin/AdminTokenManagePage';
+import AdminTokenPage from './pages/admin/AdminTokenPage';
 
 
 
@@ -44,6 +45,7 @@ export default function Router() {
         { path: 'a_home', element: <AdminHomePage /> },
         { path: 'a_studentlist', element: <AdminStudentListPage /> },
         { path: 'a_tokenmanage', element: <AdminTokenManagePage /> },
+        { path: 'a_tokenpublish', element: <AdminTokenPage /> },
       ]
     },
     {

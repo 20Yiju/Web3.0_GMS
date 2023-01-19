@@ -8,7 +8,6 @@ import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
@@ -36,14 +35,65 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-UserListToolbar.propTypes = {
+AdminTokenToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function AdminTokenToolbar({ numSelected, filterName, onFilterName }) {
+ 
+  const [course, setCourse] = React.useState(''); //추가함!
+  const [tokenType, setTokenType] = React.useState(''); //추가함!
+
+  //추가함!
+  const handleChange = (event) => {
+    setCourse(event.target.value);
+  };
+
+  //추가함!
+  const handleChange2 = (event) => {
+    setTokenType(event.target.value);
+  };
+
+
   return (
+    <div>
+      
+      <FormControl sx={{ m: 1, minWidth: 120 }}> 
+        <Select
+          value={course}
+          onChange={handleChange}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value="">
+            <em>과목</em>
+          </MenuItem>
+          <MenuItem value={10}>컴퓨터 네트워크 01분반</MenuItem>
+          
+        </Select>
+        
+      </FormControl>
+
+      <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          value={tokenType}
+          onChange={handleChange2}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value="">
+            <em>전체 보기</em>
+          </MenuItem>
+          <MenuItem value={10}>출석 토큰</MenuItem>
+          <MenuItem value={20}>과제 토큰</MenuItem>
+          <MenuItem value={30}>시험 토큰</MenuItem>
+        </Select>
+        
+      </FormControl>
+    
+    
     <StyledRoot
       sx={{
         ...(numSelected > 0 && {
@@ -60,13 +110,15 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         <StyledSearch
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="발행 토큰 검색"
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
             </InputAdornment>
           }
         />
+        
+        
       )}
 
       {numSelected > 0 ? (
@@ -83,5 +135,8 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         </Tooltip>
       )}
     </StyledRoot>
+    
+
+    </div>
   );
 }

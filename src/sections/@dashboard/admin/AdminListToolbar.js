@@ -1,83 +1,60 @@
-import PropTypes from 'prop-types';
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
-// component
-import Iconify from '../../../components/iconify';
+import * as React from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-// ----------------------------------------------------------------------
+export default function SelectOtherProps() {
+  const [year, setYear] = React.useState('');
 
-const StyledRoot = styled(Toolbar)(({ theme }) => ({
-  height: 96,
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: theme.spacing(0, 1, 0, 3),
-}));
+  const handlesetYearChange = (event) => {
+    setYear(event.target.value);
+  };
 
-const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
-  transition: theme.transitions.create(['box-shadow', 'width'], {
-    easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter,
-  }),
-  '&.Mui-focused': {
-    width: 320,
-    boxShadow: theme.customShadows.z8,
-  },
-  '& fieldset': {
-    borderWidth: `1px !important`,
-    borderColor: `${alpha(theme.palette.grey[500], 0.32)} !important`,
-  },
-}));
+  const [semester, setSemester] = React.useState('');
 
-// ----------------------------------------------------------------------
+  const handleSemesterChange = (event) => {
+    setSemester(event.target.value);
+  };
 
-AdminListToolbar.propTypes = {
-  numSelected: PropTypes.number,
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
-};
-
-export default function AdminListToolbar({ numSelected, filterName, onFilterName }) {
   return (
-    <StyledRoot
-      sx={{
-        ...(numSelected > 0 && {
-          color: 'primary.main',
-          bgcolor: 'primary.lighter',
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <StyledSearch
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Search user..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          }
-        />
-      )}
+    <div>
+      <FormControl sx={{ m: 1, minWidth: 150 }}>
+        <InputLabel id="demo-simple-select-helper-label">개설 년도</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={year}
+          label="개설 년도"
+          onChange={handlesetYearChange}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>2020</MenuItem>
+          <MenuItem value={20}>2021</MenuItem>
+          <MenuItem value={30}>2022</MenuItem>
+        </Select>
+      </FormControl>
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
-      )}
-    </StyledRoot>
+      
+      <FormControl sx={{ m: 1, minWidth: 150 }}>
+        <InputLabel id="demo-simple-select-helper-label">개설 학기</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={semester}
+          label="개설 학기"
+          onChange={handleSemesterChange}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>1 학기</MenuItem>
+          <MenuItem value={20}>2 학기</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
   );
 }

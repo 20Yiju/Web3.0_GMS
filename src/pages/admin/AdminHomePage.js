@@ -50,6 +50,7 @@ const TABLE_HEAD = [
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
   // { id: '' },
+  { id: '' },
   { id: 'name', label: '개설 과목명', alignRight: false },
   { id: 'section', label: '분반', alignRight: false },
   { id: '' },
@@ -169,13 +170,13 @@ export default function HomePage() {
   const goSyllabus = () => {
     navigate("/dashboard/profile");
   };
-  const goAttendance = () => {
-    navigate("/dashboard/attendance");
+  // const goAttendance = () => {
+  //   navigate("/dashboard/attendance");
+  // };
+  const goStudentList = () => {
+    navigate("/a_dashboard/a_studentlist");
   };
-  const goGrade = () => {
-    navigate("/dashboard/grade");
-  };
-  const goRanking = () => {
+  const goFixContent = () => {
     navigate("/dashboard/ranking");
     
     
@@ -208,53 +209,53 @@ const handleClose = () => {
             등록하기
           </Button>
           <Dialog open={popup} onClose={handleClose}>
-        <DialogTitle>과목 등록하기</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            새로운 과목을 추가해 주세요:D
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="class"
-            label="개설 과목명"
-            type="class"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="time"
-            label="개설 기간"
-            type="string time"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="classroom"
-            label="강의실"
-            type="claclassroomss"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="schedule"
-            label="강의 계획서"
-            type="schedule"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>취소</Button>
-          <Button onClick={handleClose}>등록</Button>
-        </DialogActions>
-      </Dialog>
+          <DialogTitle>과목 등록하기</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              새로운 과목을 추가해 주세요:D
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="class"
+              label="개설 과목명"
+              type="class"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="time"
+              label="개설 기간"
+              type="string time"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="classroom"
+              label="강의실"
+              type="claclassroomss"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="schedule"
+              label="강의 계획서"
+              type="schedule"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>취소</Button>
+            <Button onClick={handleClose}>등록</Button>
+          </DialogActions>
+        </Dialog>
 
         </Stack>
 
@@ -300,17 +301,63 @@ const handleClose = () => {
                         <TableCell align="left"> {classroom} </TableCell>
 
                         <TableCell align="left">
-                            <Button onClick={goAttendance}>확인</Button>
+                            <Button onClick={goSyllabus}>확인</Button>
                         </TableCell>
 
                         <TableCell align="left">
-                            <Button onClick={goGrade}>확인</Button>
+                            <Button onClick={goStudentList}>확인</Button>
                         </TableCell>
 
                         <TableCell align="left">
-                            <Button onClick={goRanking}>확인</Button>
+                        <Button  onClick= {handleClickOpen} > 
+                          수정
+                        </Button>
+                            <Dialog open={popup} onClose={handleClose}>
+                              <DialogTitle>과목 수정하기</DialogTitle>
+                              <DialogContent>
+                                <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="class"
+                                  label="개설 과목명"
+                                  type="class"
+                                  fullWidth
+                                  variant="standard"
+                                />
+                                <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="time"
+                                  label="개설 기간"
+                                  type="string time"
+                                  fullWidth
+                                  variant="standard"
+                                />
+                                <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="classroom"
+                                  label="강의실"
+                                  type="claclassroomss"
+                                  fullWidth
+                                  variant="standard"
+                                />
+                                <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="schedule"
+                                  label="강의 계획서"
+                                  type="schedule"
+                                  fullWidth
+                                  variant="standard"
+                                />
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={handleClose}>취소</Button>
+                                <Button onClick={handleClose}>등록</Button>
+                              </DialogActions>
+                            </Dialog>
                         </TableCell>
-
                         <TableCell align="right">
                           <IconButton size="large" co lor="inherit" onClick={handleOpenMenu}>
                             <Iconify icon={'eva:more-vertical-fill'} />

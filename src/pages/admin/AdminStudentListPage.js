@@ -4,7 +4,7 @@ import { filter } from 'lodash';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
-
+import './Admin.css';
 // @mui
 import {
   Card,
@@ -38,6 +38,8 @@ import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 // components
 
 import Iconify from '../../components/iconify';
@@ -225,12 +227,22 @@ export default function AdminStudentListPage() {
     setPage(0);
     setFilterName(event.target.value);
   };
-  
-  const handleClickOpen = () => {
-    setOpen(true);
+
+  const [openforAttend, setforAttendOpen] = React.useState(false);
+  const [openforGrade, setforGradeOpen] = React.useState(false);
+
+  const handleClickOpenforAttend = () => {
+    setforAttendOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseforAttend = () => {
+    setforAttendOpen(false);
+  };
+
+  const handleClickOpenforGrade = () => {
+    setforGradeOpen(true);
+  };
+  const handleCloseforGrade = () => {
+    setforGradeOpen(false);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
@@ -251,6 +263,18 @@ export default function AdminStudentListPage() {
   const goTokenPublish = () => {
     navigate("/a_dashboard/a_tokenpublish");
   };
+
+  const [week, setWeek] = React.useState('');
+
+  const selecthandleChange = (event) => {
+    setWeek(event.target.value);
+  };
+
+  const [token, setToken] = React.useState('');
+
+  const handlesetTokenChange = (event) => {
+    setToken(event.target.value);
+  };
   
 
   return (
@@ -261,17 +285,9 @@ export default function AdminStudentListPage() {
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          {/* <Typography variant="h4" gutterBottom>
-            <h2>관리자 홈페이지</h2>
-          </Typography> */}
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            hambugar
-          </Button>
-        </Stack>
+        
 
         <Card>
-          <AdminListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -316,74 +332,163 @@ export default function AdminStudentListPage() {
                         </TableCell>
 
                         <TableCell align="left">
-                            <Button className='btn1' onClick={handleClickOpen}>
+                            <Button className='btn1' onClick={handleClickOpenforAttend}>
                               입력
-                            <Dialog 
+                            </Button>
 
-                            open={open} onClose={handleClose}>
-                              <DialogTitle>Subscribe</DialogTitle>
+                            <Dialog 
+                            open={openforAttend} onClose={handleCloseforAttend}>
+                              <DialogTitle>홍길동의 출결정보</DialogTitle>
                               <DialogContent>
-                                <DialogContentText>
-                                  To subscribe to this website, please enter your email address here. We
-                                  will send updates occasionally.
-                                </DialogContentText>
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="name"
-                                  label="Email Address"
-                                  type="email"
-                                  fullWidth
-                                  variant="standard"
-                                />
+                              <FormControl sx={{ m: 1, minWidth: 80 }}>
+                                <InputLabel id="demo-simple-select-autowidth-label">주차</InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-autowidth-label"
+                                  id="demo-simple-select-autowidth"
+                                  value={week}
+                                  onChange={selecthandleChange}
+                                  autoWidth
+                                  label="Week"
+                                >
+                                  <MenuItem value="">
+                                    <em>None</em>
+                                  </MenuItem>
+                                  <MenuItem value={1}>1</MenuItem>
+                                  <MenuItem value={2}>2</MenuItem>
+                                  <MenuItem value={3}>3</MenuItem>
+                                  <MenuItem value={4}>4</MenuItem>
+                                  <MenuItem value={5}>5</MenuItem>
+                                  <MenuItem value={6}>6</MenuItem>
+                                  <MenuItem value={7}>7</MenuItem>
+                                  <MenuItem value={8}>8</MenuItem>
+                                  <MenuItem value={9}>9</MenuItem>
+                                  <MenuItem value={10}>10</MenuItem>
+                                  <MenuItem value={11}>11</MenuItem>
+                                  <MenuItem value={12}>12</MenuItem>
+                                  <MenuItem value={13}>13</MenuItem>
+                                  <MenuItem value={14}>14</MenuItem>
+                                  <MenuItem value={15}>15</MenuItem>
+                                  <MenuItem value={16}>16</MenuItem>
+                                </Select>
+                              </FormControl>
+                                <br />
+                                <Stack>
+                                <Stack direction="row" alignItems="center">
+                                  <div className='attendLabel'>
+                                    출석
+                                  </div>
+                                  <div className='lateLabel'>
+                                    지각
+                                  </div>
+                                </Stack>
+                                
+                                <div className='attendCheckbox'>
+                                  <Stack direction="row" alignItems="center">
+                                    <div className='label'>
+                                      1차시
+                                    </div>
+                                    <FormControlLabel control={<Checkbox />} />
+                                    <FormControlLabel control={<Checkbox />}/>
+                                  </Stack>
+                                </div>
+                                
+                                <br/>
+                                <div className='lateCheckbox'>
+                                  <Stack direction="row" alignItems="center">
+                                    <div className='label'>
+                                      2차시
+                                    </div>
+                                    <FormControlLabel control={<Checkbox />} />
+                                    <FormControlLabel control={<Checkbox />}/>
+                                  </Stack>
+                                </div>
+                                </Stack>
+                                
                               </DialogContent>
                               <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={handleClose}>발행</Button>
+                                <Button onClick={handleCloseforAttend}>취소</Button>
+                                <Button onClick={handleCloseforAttend}>발행</Button>
                               </DialogActions>
                             </Dialog>
-                            </Button>
                         </TableCell>
+
 
                         <TableCell align="left">
-                            <Button onClick={handleClickOpen}>
+                            <Button onClick={handleClickOpenforGrade}>
                               입력
                             </Button>
-                            <Dialog open={open} onClose={handleClose}>
-                              <DialogTitle>홍길동의 출결정보 수정</DialogTitle>
+                           
+                            <Dialog 
+                            open={openforGrade} onClose={handleCloseforGrade}>
+                              <DialogTitle>출석 점수 입력</DialogTitle>
                               <DialogContent>
-                                <FormControl sx={{ m: 1, width: 100 }}>
-                                  <InputLabel id="demo-multiple-name-label">주차</InputLabel>
+                                  
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby="demo-form-control-label-placement"
+                                    name="position"
+                                    //defaultValue="HW"
+                                  >
+                                    <FormControlLabel
+                                      value="hw"
+                                      control={<Radio />}
+                                      label="과제"
+                                      labelPlacement="top"
+                                    />
+                                    <FormControlLabel
+                                      value="exam"
+                                      control={<Radio />}
+                                      label="시험"
+                                      labelPlacement="top"
+ />
+                                    <FormControlLabel
+                                      value="quiz"
+                                      control={<Radio />}
+                                      label="퀴즈"
+                                      labelPlacement="top"/>
+                                  </RadioGroup>
+                                    
+                                  <FormControl sx={{ m: 1, minWidth: 150 }}>
+                                    <InputLabel id="demo-simple-select-helper-label">토큰 선택</InputLabel>
                                     <Select
-                                      labelId="demo-multiple-name-label"
-                                      id="demo-multiple-name"
-                                      multiple
-                                      value={personName}
-                                      onChange={handleChange}
-                                      input={<OutlinedInput label="Name" />}
-                                      MenuProps={MenuProps}
+                                      labelId="demo-simple-select-helper-label"
+                                      id="demo-simple-select-helper"
+                                      value={token}
+                                      label="개설 년도"
+                                      onChange={handlesetTokenChange}
                                     >
-                                      {names.map((name) => (
-                                        <MenuItem
-                                          key={name}
-                                          value={name}
-                                          style={getStyles(name, personName, theme)}
-                                        >
-                                          {name}
-                                        </MenuItem>
-                                      ))}
+            
+                                      <MenuItem value={10}>HW1</MenuItem>
+                                      <MenuItem value={20}>Mid</MenuItem>
+                                      <MenuItem value={30}>HW2</MenuItem>
                                     </Select>
-                                </FormControl>
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel disabled control={<Checkbox />} label="Disabled" />
-                              
-                              </DialogContent>
+                                  </FormControl>
+
+                                  <TextField
+                                    autoFocus
+                                    margin = "dense"
+                                    padding = {5}
+                                    id="score"
+                                    label="점수 입력"
+                                    type="string time"
+                                    fullWidth
+                                    variant="standard"
+                                  />
+                                  <TextField
+                                    id="outlined-multiline-static"
+                                    label="코멘트 입력"
+                                    multiline
+                                    fullWidth
+                                    rows={5}
+                                  />
+                                </DialogContent>
                               <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={handleClose}>발행</Button>
+                                <Button onClick={handleCloseforGrade}>취소</Button>
+                                <Button onClick={handleCloseforGrade}>발행</Button>
                               </DialogActions>
                             </Dialog>
                         </TableCell>
+          
                       </TableRow>
                     );
                   })}

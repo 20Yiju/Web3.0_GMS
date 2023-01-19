@@ -1,0 +1,18 @@
+.attendLabel .lateLabel{
+    padding-right: 20px;
+}
+.attendLabel{
+    padding-left: 50px;
+}
+.lateLabel{
+    padding-left: 20px;
+}
+.attendCheckbox .label, .lateCheckbox .label{
+    padding-right: 20px;
+}
+.attendance_token, .grade_token{
+    padding-left: 10px;
+}
+.grade_token{
+    padding-left: 30%;
+}
