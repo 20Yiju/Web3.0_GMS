@@ -10,7 +10,7 @@ const users = [...Array(24)].map((_, index) => ({
   // company: faker.company.name(),
   // isVerified: faker.datatype.boolean(),
   // status: sample(['active', 'banned']),
-  name: sample([
+  classname: sample([
     '컴퓨터 구조',
     '자바 프로그래밍',
     '실전 프로젝트1',

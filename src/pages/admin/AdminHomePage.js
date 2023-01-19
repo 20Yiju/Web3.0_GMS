@@ -50,13 +50,13 @@ const TABLE_HEAD = [
   // { id: 'isVerified', label: 'Verified', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
   // { id: '' },
-  { id: 'name', label: '과목명', alignRight: false },
-  { id: 'achievement', label: '성취도', alignRight: false },
-  { id: 'professor', label: '담당 교수', alignRight: false },
+  { id: 'name', label: '개설 과목명', alignRight: false },
+  { id: 'section', label: '분반', alignRight: false },
+  { id: '' },
+  { id: 'classroom', label: '강의실', alignRight: false },
   { id: 'syllabus', label: '강의 계획서', alignRight: false },
-  { id: 'attendance', label: '출석 토큰', alignRight: false },
-  { id: 'grade', label: '성적 토큰', alignRight: false },
-  { id: 'ranking', label: '랭킹', alignRight: false },
+  { id: 'attendance', label: '수강 학생', alignRight: false },
+  { id: 'grade', label: '수정하기', alignRight: false },
   { id: '' },
 ];
 
@@ -275,31 +275,29 @@ const handleClose = () => {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, professor, achievement} = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                    const { id, classname, section, classroom} = row;
+                    const selectedUser = selected.indexOf(classname) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, classname)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             {/* <Avatar alt={name} src={avatarUrl} /> */}
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {classname}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{achievement}</TableCell>
+                        <TableCell align="left">{section}</TableCell>
 
-                        <TableCell align="left">{professor}</TableCell>
+                        <TableCell align="left">  </TableCell>
 
-                        <TableCell align="left">
-                            <Button onClick={goSyllabus}>확인</Button>
-                        </TableCell>
+                        <TableCell align="left"> {classroom} </TableCell>
 
                         <TableCell align="left">
                             <Button onClick={goAttendance}>확인</Button>

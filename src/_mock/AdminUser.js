@@ -50,6 +50,27 @@ const users = [...Array(24)].map((_, index) => ({
     98,
     88
   ]),
+  classname: sample([
+    '컴퓨터 구조',
+    '자바 프로그래밍',
+    '실전 프로젝트1',
+    '중국어2',
+    '경영학입문',
+    'Operating System'
+  ]),
+  classroom: sample([
+    'OH405',
+    'NTH220',
+    'NTH313',
+    'OH306',
+    'NTH412',
+    'NTH212'
+  ]),
+  section: sample([
+    '01 분반',
+    '02 분반',
+    '03 분반'
+  ])
 }));
 
 export default users;
