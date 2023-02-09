@@ -65,24 +65,21 @@ export default function AdminStudentListPage() {
         setStudentList(response.data)
       });
   }, []);
-  // useEffect(() => {
-  //   axios.get("/a_dashboard/a_studentlist").then((response) => {
-  //     setList(response.data)
-  //   });
-  // }, []);
+
   const [name, stname] = useState('');
 
   return (
     <>
       <Helmet >
-        <title> Home </title>
+        <title> Student List </title>
       </Helmet>
 
+      <Container>
+        <h1> Student List</h1>
         <Card>
-          {list.map((val) => {
+          {/* {list.map((val) => {
               return <h1>{name} = {val.profID}</h1>
-          })}
-          Student List
+          })} */}
           <Scrollbar>
               <Table>
                 <TableHead>
@@ -118,6 +115,7 @@ export default function AdminStudentListPage() {
               </Table>
             </Scrollbar>
         </Card>
+      </Container>
     </>
   );
 }

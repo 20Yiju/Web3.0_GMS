@@ -6,7 +6,7 @@ import { styled, alpha } from '@mui/material/styles';
 // import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';      // original code
 import { Box, Link, Drawer, Typography, Avatar} from '@mui/material';                         // transform
 // mock
-import account from '../../../_mock/account';
+import account from '../../../_mock/AdminAccount';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components

@@ -1,9 +1,11 @@
+import profilePhoto from '../assets/images/avatars/avatar_default.jpg';
+
 const myinfo = {
     displayName: '홍길동',
     department: '전산전자공학부',
-    studentID: '22300000',
+    studentID: '22312345',
     email: 'iamGD@handong.ac.kr',
-    photoURL: '/assets/images/avatars/avatar_default.jpg',
+    photoURL: {profilePhoto}
   };
   
   export default myinfo;

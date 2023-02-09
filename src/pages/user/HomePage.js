@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 // import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // @mui
 import {
@@ -23,6 +24,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  TableHead
 } from '@mui/material';
 // components
 import Label from '../../components/label';
@@ -84,6 +86,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function HomePage() {
+  const [list, setCourseList] = useState([]);
+
+  useEffect(() => {
+    axios.get('/dashboard/home').then((response) => {
+        setCourseList(response.data)
+      });
+  }, []);
+
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(null);
@@ -96,9 +106,9 @@ export default function HomePage() {
 
   const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState('');
+  // const [filterName, setFilterName] = useState('');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -138,25 +148,25 @@ export default function HomePage() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setPage(0);
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  // };
 
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
+  // const handleFilterByName = (event) => {
+  //   setPage(0);
+  //   setFilterName(event.target.value);
+  // };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  // const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  // const isNotFound = !filteredUsers.length && !!filterName;
 
   const goSyllabus = () => {
     navigate("/dashboard/profile");
@@ -186,114 +196,49 @@ export default function HomePage() {
             hambugar
           </Button>
         </Stack>
-
+      {/* 여기에서부터 변경 */}
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          {/* {list.map((val) => {
+              return <h1>{name} = {val.profID}</h1>
+          })} */}
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='center'>과목명</TableCell>
+                    <TableCell align='center'>성취도</TableCell>
+                    <TableCell align='center'>담당 교수</TableCell>
+                    <TableCell align='center'>강의 계획서</TableCell>
+                    <TableCell align='center'>출석 토큰</TableCell>
+                    <TableCell align='center'>성적 토큰</TableCell>
+                    <TableCell align='center'>랭킹</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, classname, professor, achievement} = row;
-                    const selectedUser = selected.indexOf(classname) !== -1;
-
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, classname)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={name} src={avatarUrl} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {classname}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{achievement}</TableCell>
-
-                        <TableCell align="left">{professor}</TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goSyllabus}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goAttendance}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goGrade}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goRanking}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" co lor="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
+                  {list.map((row) => (
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
+                      <TableCell align='center'>{row.courseName}</TableCell>
+                      <TableCell align='center'>{row.achieve}</TableCell>
+                      <TableCell align='center'>{row.professor}</TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goSyllabus}>확인</Button>
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goAttendance}>입력</Button>
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goGrade}>입력</Button>
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goRanking}>확인</Button>
                       </TableCell>
                     </TableRow>
-                  </TableBody>
-                )}
+                  ))}
+                </TableBody>
               </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+            </Scrollbar>
         </Card>
+       {/* 변경 마지막 */}
       </Container>
 
       <Popover
