@@ -40,6 +40,7 @@ import Scrollbar from '../../components/scrollbar';
 import { AdminListHead, AdminListToolbar } from '../../sections/@dashboard/admin';
 // mock
 import USERLIST from '../../_mock/AdminUser';
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -174,10 +175,10 @@ export default function HomePage() {
   // };
   const goStudentList = () => {
     navigate("/a_dashboard/a_studentlist");
+    //student_list();
   };
   const goFixContent = () => {
     navigate("/dashboard/ranking");
-    
     
   };
 
@@ -191,7 +192,9 @@ const handleClickOpen = () => {
 const handleClose = () => {
   setPopup(false);
 };
-
+// const student_list=async ()=>{
+//   axios.get('/a_dashboard/a_studentlist')
+// }
 
   return (
     <>

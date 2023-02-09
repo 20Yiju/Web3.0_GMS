@@ -39,7 +39,7 @@ export default function AdminListHead({
     onRequestSort(event, property);
   };
 
-  return (
+  return (~
     <TableHead>
       <TableRow>
         {headLabel.map((headCell) => (
