@@ -12,9 +12,22 @@ app.get('/', (req, res)=>{
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.get('/a_dashboard/a_home', (req, res)=>{
+    console.log('/a_dashboard/a_home')
+    db.query("select * from Teach", (err, data) => {
+        if(!err) {
+            console.log(data)
+        }
+        else {
+            console.log(err)
+        }
+        res.send(data)
+    })
+})
+
 app.get('/a_dashboard/a_studentlist', (req, res)=>{
     console.log('/a_dashboard/a_studentlist')
-    db.query("select * from TakeStudents", (err, data) => {
+    db.query("select * from TakeStudents where profID Like '12345'", (err, data) => {
         if(!err) {
             console.log(data)
         }
@@ -27,7 +40,7 @@ app.get('/a_dashboard/a_studentlist', (req, res)=>{
 
 app.get('/dashboard/home', (req, res)=>{
     console.log('/dashboard/home')
-    db.query("select * from HomeTest", (err, data) => {
+    db.query("select * from Course", (err, data) => {
         if(!err) {
             console.log(data)
         }

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 // import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
 
@@ -25,6 +25,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  TableHead
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -33,33 +34,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 // components
-import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import Scrollbar from '../../components/scrollbar';
 // sections
 import { AdminListHead, AdminListToolbar } from '../../sections/@dashboard/admin';
 // mock
-import USERLIST from '../../_mock/AdminUser';
 import axios from 'axios';
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  // { id: 'name', label: 'Name', alignRight: false },
-  // { id: 'company', label: 'Company', alignRight: false },
-  // { id: 'role', label: 'Role', alignRight: false },
-  // { id: 'isVerified', label: 'Verified', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
-  // { id: '' },
-  { id: 'name', label: '개설 과목명', alignRight: false },
-  { id: 'section', label: '분반', alignRight: false },
-  { id: '' },
-  { id: 'classroom', label: '강의실', alignRight: false },
-  { id: 'syllabus', label: '강의 계획서', alignRight: false },
-  { id: 'attendance', label: '수강 학생', alignRight: false },
-  { id: 'grade', label: '수정하기', alignRight: false },
-  { id: '' },
-];
 
 // ----------------------------------------------------------------------
 
@@ -93,6 +75,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function HomePage() {
+  const [list, setCourseList] = useState([]);
+
+  useEffect(() => {
+    axios.get('/a_dashboard/a_home').then((response) => {
+        setCourseList(response.data)
+      });
+  }, []);
+
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(null);
@@ -109,70 +99,19 @@ export default function HomePage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
   const handleCloseMenu = () => {
     setOpen(null);
   };
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
 
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
-
   const goSyllabus = () => {
     navigate("/dashboard/profile");
   };
-  // const goAttendance = () => {
-  //   navigate("/dashboard/attendance");
-  // };
   const goStudentList = () => {
     navigate("/a_dashboard/a_studentlist");
     //student_list();
@@ -192,9 +131,6 @@ const handleClickOpen = () => {
 const handleClose = () => {
   setPopup(false);
 };
-// const student_list=async ()=>{
-//   axios.get('/a_dashboard/a_studentlist')
-// }
 
   return (
     <>
@@ -263,150 +199,40 @@ const handleClose = () => {
 
         <Card>
           <AdminListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          {/* 변화를 줄 요소 */}
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <AdminListHead
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='center'>과목명</TableCell>
+                    <TableCell align='center'>분반</TableCell>
+                    <TableCell align='center'>강의실</TableCell>
+                    <TableCell align='center'>강의 계획서</TableCell>
+                    <TableCell align='center'>수강 학생</TableCell>
+                    <TableCell align='center'>수정</TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { classname, section, classroom} = row;
-                    const selectedUser = selected.indexOf(classname) !== -1;
-
-                    return (
-                      <TableRow hover key={classname} tabIndex={-1}>
-                        
-                        <TableCell component="th" scope="row" padding="normal">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={name} src={avatarUrl} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {classname}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{section}</TableCell>
-
-                        <TableCell align="left">  </TableCell>
-
-                        <TableCell align="left"> {classroom} </TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goSyllabus}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="left">
-                            <Button onClick={goStudentList}>확인</Button>
-                        </TableCell>
-
-                        <TableCell align="left">
-                        
-                        <Button  onClick= {handleClickOpen} > 
-                          수정
-                        </Button>
-                            <Dialog open={popup} onClose={handleClose}>
-                              <DialogTitle>과목 수정하기</DialogTitle>
-                              <DialogContent>
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="class"
-                                  label="개설 과목명"
-                                  type="class"
-                                  fullWidth
-                                  variant="standard"
-                                />
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="time"
-                                  label="개설 기간"
-                                  type="string time"
-                                  fullWidth
-                                  variant="standard"
-                                />
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="classroom"
-                                  label="강의실"
-                                  type="claclassroomss"
-                                  fullWidth
-                                  variant="standard"
-                                />
-                                <TextField
-                                  autoFocus
-                                  margin="dense"
-                                  id="schedule"
-                                  label="강의 계획서"
-                                  type="schedule"
-                                  fullWidth
-                                  variant="standard"
-                                />
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={handleClose}>취소</Button>
-                                <Button onClick={handleClose}>등록</Button>
-                              </DialogActions>
-                            </Dialog>
-                        </TableCell>
-                        <TableCell align="right">
-                          <IconButton size="large" co lor="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
+                  {list.map((row) => (
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
+                      <TableCell align='center'>{row.courseName}</TableCell>
+                      <TableCell align='center'>{row.Section}</TableCell>
+                      <TableCell align='center'>{}</TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goSyllabus}>확인</Button>
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goStudentList}>확인</Button>
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button onClick={goFixContent}>확인</Button>
                       </TableCell>
                     </TableRow>
-                  </TableBody>
-                )}
+                  ))}
+                </TableBody>
               </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+            </Scrollbar>
+          {/* 변화가 끝나는 부분 */}
         </Card>
       </Container>
 
