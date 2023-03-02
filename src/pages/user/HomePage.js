@@ -161,10 +161,10 @@ export default function HomePage() {
                         <Button onClick={goSyllabus}>확인</Button>
                       </TableCell>
                       <TableCell align='center'>
-                        <Button onClick={goAttendance}>입력</Button>
+                        <Button onClick={goAttendance}>확인</Button>
                       </TableCell>
                       <TableCell align='center'>
-                        <Button onClick={goGrade}>입력</Button>
+                        <Button onClick={goGrade}>확인</Button>
                       </TableCell>
                       <TableCell align='center'>
                         <Button onClick={goRanking}>확인</Button>

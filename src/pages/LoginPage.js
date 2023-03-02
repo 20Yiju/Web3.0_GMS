@@ -10,6 +10,8 @@ import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom';
+import GoogleButton from '../login/googleLogin';
+
 
 
 // ----------------------------------------------------------------------
@@ -88,11 +90,15 @@ export default function LoginPage() {
               Don’t have an account? {''}
               <Link variant="subtitle2">Get started</Link>
             </Typography>
+            <div>
+              <GoogleButton />
+              <br/>
+            </div>
 
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
+              {/* <Button fullWidth size="large" color="inherit" variant="outlined" >
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
+              </Button> */}
 
               <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenUser}>
                 사용자
