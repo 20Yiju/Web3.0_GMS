@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -11,6 +12,8 @@ import Iconify from '../components/iconify';
 import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom';
 import GoogleButton from '../login/googleLogin';
+import RadioGroup from './radio/RadioGroup';
+import Radio from './radio/Radio'
 
 
 
@@ -56,6 +59,11 @@ export default function LoginPage() {
     navigate("/a_dashboard/a_home");
   };
 
+  // 구글 로그인 관련 변수 선언
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [value, setValue] = useState("Student");
+
   return (
     <>
       <Helmet>
@@ -90,10 +98,29 @@ export default function LoginPage() {
               Don’t have an account? {''}
               <Link variant="subtitle2">Get started</Link>
             </Typography>
-            <div>
-              <GoogleButton />
-              <br/>
-            </div>
+
+
+            {/* Google 로그인 버튼 */}      
+            <article>
+              <header>
+                <h3>구글 로그인 그룹화 테스트</h3> 
+              </header>
+              <fieldset>
+                  {/* <GoogleButton />   */}
+                  <>
+                      {!isLogin
+                          ? <GoogleButton setUserInfo={setUserInfo} setIsLogin={setIsLogin} />
+                          : navigate("/dashboard/home")
+                      }
+                   </>
+                  <RadioGroup value={value} onChange={setValue}>
+                        <Radio value="Student">학생</Radio>
+                        <Radio value="Professor">교수</Radio>
+                    </RadioGroup>
+                    <footer>{value}를 선택하셨습니다.</footer>
+                </fieldset>
+            </article>
+
 
             <Stack direction="row" spacing={2}>
               {/* <Button fullWidth size="large" color="inherit" variant="outlined" >
