@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -10,6 +11,10 @@ import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom';
+import GoogleButton from '../login/googleLogin';
+import RadioGroup from './radio/RadioGroup';
+import Radio from './radio/Radio'
+
 
 
 // ----------------------------------------------------------------------
@@ -47,12 +52,24 @@ export default function LoginPage() {
   
   const mdUp = useResponsive('up', 'md');
 
-  const handleOpenUser = () => {
-    navigate("/dashboard/home");
+  // const handleOpenUser = () => {
+  //   navigate("/dashboard/home");
+  // };
+  // const handleOpenAdmin = () => {
+  //   navigate("/a_dashboard/a_home");
+  // };
+
+
+  // 구글 로그인 관련 변수 선언
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [value, setValue] = useState("0");
+  const handleOpenStart = (enter) => {
+    // console.log(enter)
+    enter == "0" ? navigate("/dashboard/home") : navigate("/a_dashboard/a_home");
   };
-  const handleOpenAdmin = () => {
-    navigate("/a_dashboard/a_home");
-  };
+  
+
 
   return (
     <>
@@ -89,18 +106,40 @@ export default function LoginPage() {
               <Link variant="subtitle2">Get started</Link>
             </Typography>
 
-            <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenUser}>
+            {/* Google 로그인 버튼 */}      
+            <article>
+              <header>
+                <h3>구글 로그인 그룹화 테스트</h3> 
+              </header>
+              <fieldset>
+                  <>
+                      {!isLogin
+                          ? <GoogleButton setUserInfo={setUserInfo} setIsLogin={setIsLogin} />
+                          : handleOpenStart(value)
+                      }
+                   </>
+                  <RadioGroup value={value} onChange={setValue}>
+                        <Radio value="0">학생</Radio>
+                        <Radio value="1">교수</Radio>
+                    </RadioGroup>
+                    <footer>{value}를 선택하셨습니다.</footer>
+                </fieldset>
+            </article>
+
+
+            <Stack direction="row" spacing={2}>
+              {/* <Button fullWidth size="large" color="inherit" variant="outlined" >
+                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
+              </Button> */}
+
+              {/* <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenUser}>
                 사용자
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleOpenAdmin}>
                 관리자
-              </Button>
+              </Button> */}
             </Stack>
 
             <Divider sx={{ my: 3 }}>
